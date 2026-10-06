@@ -1,6 +1,7 @@
 import streamlit as st
 from html import escape
 
+
 # =========================================================
 # CONFIGURAÇÃO DA PÁGINA
 # =========================================================
@@ -16,16 +17,8 @@ st.set_page_config(
 # =========================================================
 # LINKS
 # =========================================================
-# Para adicionar novos links futuramente, basta inserir
-# novos itens nesta lista.
-#
-# categorias sugeridas:
-# "Organização"
-# "Investimentos"
-# "Finanças"
-# "Estudos"
-# "Trabalho"
-# "Utilidades"
+# Para adicionar novos links, basta incluir um novo item
+# nesta lista seguindo o mesmo padrão.
 
 LINKS = [
     {
@@ -77,10 +70,7 @@ LINKS = [
         "destaque": "GOOGLE",
     },
 
-    # =====================================================
-    # EXEMPLOS PARA ADICIONAR DEPOIS
-    # =====================================================
-
+    # EXEMPLOS PARA ADICIONAR DEPOIS:
     # {
     #     "titulo": "BTG",
     #     "descricao": "Investimentos e conta",
@@ -89,7 +79,6 @@ LINKS = [
     #     "icone": "💰",
     #     "destaque": "FINANÇAS",
     # },
-    #
     # {
     #     "titulo": "Caixa",
     #     "descricao": "Internet Banking",
@@ -105,37 +94,30 @@ LINKS = [
 # CSS
 # =========================================================
 
-st.markdown(
-    """
+st.html(
+    r"""
 <style>
-
-    /* ===============================
-       VARIÁVEIS
-       =============================== */
-
     :root {
         --bg: #07111f;
         --bg-secondary: #0a1627;
-
         --card: rgba(15, 32, 53, 0.88);
         --card-hover: rgba(21, 48, 79, 0.98);
-
         --border: rgba(120, 169, 255, 0.16);
         --border-hover: rgba(70, 145, 255, 0.60);
-
         --blue: #3b82f6;
         --blue-light: #60a5fa;
         --blue-dark: #2563eb;
-
         --text: #f4f7fb;
         --text-secondary: #9aaabd;
         --text-muted: #64748b;
     }
 
-
-    /* ===============================
-       STREAMLIT
-       =============================== */
+    html,
+    body,
+    [data-testid="stAppViewContainer"],
+    .stApp {
+        background: #07111f;
+    }
 
     .stApp {
         background:
@@ -154,7 +136,7 @@ st.markdown(
 
     .block-container {
         max-width: 1450px;
-        padding-top: 2.2rem;
+        padding-top: 2rem;
         padding-bottom: 4rem;
     }
 
@@ -170,18 +152,12 @@ st.markdown(
         visibility: hidden;
     }
 
-
-    /* ===============================
-       CABEÇALHO
-       =============================== */
-
     .topbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
+        gap: 16px;
         margin-bottom: 28px;
-
         color: var(--text-secondary);
         font-size: 13px;
     }
@@ -190,126 +166,103 @@ st.markdown(
         display: flex;
         align-items: center;
         gap: 9px;
-
         font-weight: 700;
         color: #d9e7fb;
+        letter-spacing: 0.35px;
     }
 
     .brand-dot {
         width: 9px;
         height: 9px;
-
         background: var(--blue);
         border-radius: 50%;
-
         box-shadow: 0 0 14px rgba(59, 130, 246, 0.9);
     }
 
-
-    /* ===============================
-       HERO
-       =============================== */
+    .workspace-text {
+        color: #6f829a;
+        font-weight: 700;
+        letter-spacing: 1.1px;
+        font-size: 10px;
+    }
 
     .hero {
         position: relative;
         overflow: hidden;
-
         padding: 44px 46px;
         margin-bottom: 30px;
-
         border: 1px solid var(--border);
         border-radius: 26px;
-
         background:
             linear-gradient(
                 120deg,
                 rgba(17, 40, 68, 0.95),
                 rgba(9, 23, 42, 0.92)
             );
-
-        box-shadow:
-            0 18px 50px rgba(0, 0, 0, 0.22);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
     }
 
     .hero::after {
         content: "";
-
         position: absolute;
-
         width: 320px;
         height: 320px;
-
         right: -100px;
         top: -150px;
-
         border-radius: 50%;
-
         background: rgba(59, 130, 246, 0.16);
         filter: blur(12px);
+        pointer-events: none;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
     }
 
     .hero-badge {
         display: inline-block;
-
         padding: 6px 11px;
-
         background: rgba(59, 130, 246, 0.12);
         border: 1px solid rgba(96, 165, 250, 0.24);
-        border-radius: 100px;
-
+        border-radius: 999px;
         font-size: 11px;
         font-weight: 700;
-
         color: var(--blue-light);
-
         letter-spacing: 1.3px;
-
         margin-bottom: 16px;
     }
 
     .hero h1 {
         margin: 0;
-
         color: #ffffff;
-
         font-size: clamp(31px, 4vw, 47px);
         font-weight: 750;
-
         letter-spacing: -1.4px;
+        line-height: 1.06;
     }
 
     .hero p {
         max-width: 680px;
-
         margin-top: 13px;
         margin-bottom: 0;
-
         color: var(--text-secondary);
-
         font-size: 16px;
         line-height: 1.65;
     }
 
-
-    /* ===============================
-       ESTATÍSTICAS
-       =============================== */
-
     .stats {
         display: flex;
         gap: 14px;
-
         margin-top: 28px;
         flex-wrap: wrap;
     }
 
     .stat {
         padding: 11px 17px;
-
         background: rgba(4, 15, 29, 0.38);
         border: 1px solid rgba(148, 163, 184, 0.10);
         border-radius: 12px;
-
         color: var(--text-secondary);
         font-size: 13px;
     }
@@ -319,10 +272,15 @@ st.markdown(
         margin-right: 5px;
     }
 
-
-    /* ===============================
-       TÍTULOS
-       =============================== */
+    .status-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin-right: 7px;
+        border-radius: 50%;
+        background: #60a5fa;
+        box-shadow: 0 0 10px rgba(96, 165, 250, 0.65);
+    }
 
     .section-header {
         margin-top: 25px;
@@ -331,64 +289,39 @@ st.markdown(
 
     .section-title {
         color: #f8fafc;
-
         font-weight: 700;
         font-size: 20px;
-
         margin: 0;
     }
 
     .section-subtitle {
         color: var(--text-muted);
-
         font-size: 13px;
-
         margin-top: 4px;
     }
 
-
-    /* ===============================
-       GRID
-       =============================== */
-
     .links-grid {
         display: grid;
-
-        grid-template-columns:
-            repeat(auto-fit, minmax(280px, 1fr));
-
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 17px;
-
         width: 100%;
     }
-
-
-    /* ===============================
-       CARD
-       =============================== */
 
     .link-card {
         position: relative;
         display: block;
-
-        min-height: 180px;
-
+        min-height: 190px;
         padding: 23px 23px 21px 23px;
-
         border-radius: 19px;
         border: 1px solid var(--border);
-
         background:
             linear-gradient(
                 145deg,
                 rgba(18, 39, 65, 0.91),
                 rgba(10, 24, 42, 0.91)
             );
-
         text-decoration: none !important;
-
         overflow: hidden;
-
         transition:
             transform 0.20s ease,
             border-color 0.20s ease,
@@ -398,31 +331,23 @@ st.markdown(
 
     .link-card::after {
         content: "";
-
         position: absolute;
-
         width: 120px;
         height: 120px;
-
         right: -50px;
         bottom: -55px;
-
         border-radius: 50%;
-
         background: rgba(59, 130, 246, 0.08);
-
         transition: 0.25s ease;
+        pointer-events: none;
     }
 
     .link-card:hover {
         transform: translateY(-5px);
-
         border-color: var(--border-hover);
-
         box-shadow:
             0 16px 36px rgba(0, 0, 0, 0.27),
             0 0 24px rgba(59, 130, 246, 0.07);
-
         background:
             linear-gradient(
                 145deg,
@@ -435,82 +360,54 @@ st.markdown(
         transform: scale(1.35);
     }
 
-
-    /* ===============================
-       ÍCONE
-       =============================== */
-
     .card-icon {
         width: 43px;
         height: 43px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         margin-bottom: 19px;
-
         border-radius: 12px;
-
         background:
             linear-gradient(
                 135deg,
                 rgba(59, 130, 246, 0.22),
                 rgba(37, 99, 235, 0.08)
             );
-
         border: 1px solid rgba(96, 165, 250, 0.17);
-
         font-size: 21px;
     }
 
-
-    /* ===============================
-       TEXTO DO CARD
-       =============================== */
-
     .card-category {
         position: absolute;
-
         right: 18px;
         top: 19px;
-
         color: #7291b8;
-
         font-size: 9px;
         font-weight: 800;
-
         letter-spacing: 1.15px;
     }
 
     .card-title {
         color: #f8fafc;
-
         font-size: 17px;
         font-weight: 700;
-
         margin-bottom: 6px;
     }
 
     .card-description {
         color: #8799ae;
-
         font-size: 12.5px;
         line-height: 1.5;
-
-        padding-right: 30px;
+        padding-right: 34px;
     }
 
     .card-open {
         position: absolute;
-
         right: 20px;
         bottom: 18px;
-
         color: #60a5fa;
-
         font-size: 19px;
-
         transition: transform 0.20s ease;
     }
 
@@ -518,59 +415,38 @@ st.markdown(
         transform: translate(3px, -3px);
     }
 
-
-    /* ===============================
-       FILTROS STREAMLIT
-       =============================== */
-
     div[data-baseweb="input"] > div {
         background: #0d1e32 !important;
-
         border-color: rgba(96, 165, 250, 0.18) !important;
-
         border-radius: 12px !important;
+    }
+
+    div[data-baseweb="input"] input {
+        color: #eaf2ff !important;
     }
 
     div[data-baseweb="select"] > div {
         background: #0d1e32 !important;
-
         border-color: rgba(96, 165, 250, 0.18) !important;
-
         border-radius: 12px !important;
     }
 
     label[data-testid="stWidgetLabel"] p {
         color: #8fa4bc !important;
-
         font-size: 12px !important;
     }
 
-
-    /* ===============================
-       RODAPÉ
-       =============================== */
-
     .custom-footer {
         margin-top: 45px;
-
         padding-top: 22px;
-
         border-top: 1px solid rgba(148, 163, 184, 0.08);
-
         color: #506176;
-
         text-align: center;
-
         font-size: 11px;
+        letter-spacing: 0.7px;
     }
 
-
-    /* ===============================
-       MOBILE
-       =============================== */
-
     @media (max-width: 650px) {
-
         .block-container {
             padding-left: 16px;
             padding-right: 16px;
@@ -591,11 +467,13 @@ st.markdown(
         .links-grid {
             grid-template-columns: 1fr;
         }
-    }
 
+        .topbar {
+            margin-bottom: 20px;
+        }
+    }
 </style>
-""",
-    unsafe_allow_html=True,
+"""
 )
 
 
@@ -603,22 +481,19 @@ st.markdown(
 # CABEÇALHO
 # =========================================================
 
-st.markdown(
+st.html(
     """
 <div class="topbar">
-
     <div class="brand-mini">
         <span class="brand-dot"></span>
         CENTRAL PESSOAL
     </div>
 
-    <div>
+    <div class="workspace-text">
         WORKSPACE
     </div>
-
 </div>
-""",
-    unsafe_allow_html=True,
+"""
 )
 
 
@@ -629,44 +504,38 @@ st.markdown(
 quantidade_links = len(LINKS)
 quantidade_categorias = len(set(item["categoria"] for item in LINKS))
 
-st.markdown(
+st.html(
     f"""
 <div class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">
+            PAINEL PESSOAL
+        </div>
 
-    <div class="hero-badge">
-        PAINEL PESSOAL
+        <h1>Painel de Gestão Pessoal</h1>
+
+        <p>
+            Seus projetos, investimentos, agenda e ferramentas
+            pessoais reunidos em um único lugar.
+        </p>
+
+        <div class="stats">
+            <div class="stat">
+                <strong>{quantidade_links}</strong> atalhos
+            </div>
+
+            <div class="stat">
+                <strong>{quantidade_categorias}</strong> categorias
+            </div>
+
+            <div class="stat">
+                <span class="status-dot"></span>
+                Central de organização
+            </div>
+        </div>
     </div>
-
-    <h1>
-        Painel de Gestão Pessoal
-    </h1>
-
-    <p>
-        Seus projetos, investimentos, agenda e ferramentas
-        pessoais reunidos em um único lugar.
-    </p>
-
-    <div class="stats">
-
-        <div class="stat">
-            <strong>{quantidade_links}</strong>
-            atalhos
-        </div>
-
-        <div class="stat">
-            <strong>{quantidade_categorias}</strong>
-            categorias
-        </div>
-
-        <div class="stat">
-            ● Central de organização
-        </div>
-
-    </div>
-
 </div>
-""",
-    unsafe_allow_html=True,
+"""
 )
 
 
@@ -684,10 +553,7 @@ with col_busca:
     )
 
 with col_categoria:
-
-    categorias = sorted(
-        set(item["categoria"] for item in LINKS)
-    )
+    categorias = sorted(set(item["categoria"] for item in LINKS))
 
     categoria_selecionada = st.selectbox(
         "Categoria",
@@ -703,16 +569,13 @@ with col_categoria:
 links_filtrados = LINKS
 
 if categoria_selecionada != "Todos":
-
     links_filtrados = [
         item
         for item in links_filtrados
         if item["categoria"] == categoria_selecionada
     ]
 
-
 if busca:
-
     busca_normalizada = busca.lower().strip()
 
     links_filtrados = [
@@ -722,6 +585,7 @@ if busca:
             busca_normalizada in item["titulo"].lower()
             or busca_normalizada in item["descricao"].lower()
             or busca_normalizada in item["categoria"].lower()
+            or busca_normalizada in item["destaque"].lower()
         )
     ]
 
@@ -730,10 +594,9 @@ if busca:
 # TÍTULO DA SEÇÃO
 # =========================================================
 
-st.markdown(
+st.html(
     f"""
 <div class="section-header">
-
     <div class="section-title">
         Acessos rápidos
     </div>
@@ -741,10 +604,8 @@ st.markdown(
     <div class="section-subtitle">
         {len(links_filtrados)} acesso(s) disponível(is)
     </div>
-
 </div>
-""",
-    unsafe_allow_html=True,
+"""
 )
 
 
@@ -753,73 +614,62 @@ st.markdown(
 # =========================================================
 
 if links_filtrados:
-
     cards = ""
 
     for item in links_filtrados:
-
         titulo = escape(item["titulo"])
         descricao = escape(item["descricao"])
         url = escape(item["url"], quote=True)
         categoria = escape(item["destaque"])
-        icone = item["icone"]
+        icone = escape(item["icone"])
 
         cards += f"""
-        <a
-            class="link-card"
-            href="{url}"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
+<a
+    class="link-card"
+    href="{url}"
+    target="_blank"
+    rel="noopener noreferrer"
+>
+    <div class="card-category">{categoria}</div>
 
-            <div class="card-category">
-                {categoria}
-            </div>
+    <div class="card-icon">
+        {icone}
+    </div>
 
-            <div class="card-icon">
-                {icone}
-            </div>
+    <div class="card-title">
+        {titulo}
+    </div>
 
-            <div class="card-title">
-                {titulo}
-            </div>
+    <div class="card-description">
+        {descricao}
+    </div>
 
-            <div class="card-description">
-                {descricao}
-            </div>
+    <div class="card-open">
+        ↗
+    </div>
+</a>
+"""
 
-            <div class="card-open">
-                ↗
-            </div>
-
-        </a>
-        """
-
-    st.markdown(
+    st.html(
         f"""
-        <div class="links-grid">
-            {cards}
-        </div>
-        """,
-        unsafe_allow_html=True,
+<div class="links-grid">
+{cards}
+</div>
+"""
     )
 
 else:
-
-    st.info(
-        "Nenhum acesso encontrado para os filtros selecionados."
-    )
+    st.info("Nenhum acesso encontrado para os filtros selecionados.")
 
 
 # =========================================================
 # RODAPÉ
 # =========================================================
 
-st.markdown(
+st.html(
     """
 <div class="custom-footer">
     PAINEL DE GESTÃO PESSOAL • STREAMLIT
 </div>
-""",
-    unsafe_allow_html=True,
+"""
 )
